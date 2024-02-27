@@ -1,0 +1,37 @@
+# 描述 Compose 文件的版本信息
+version : '3.7'
+
+# 定义服务，可以多个，每个服务中定义了创建容器时所需的镜像、参数、依赖等
+services:
+  zuul-gateway:  # 服务名称，跟构建镜像名称有关，假如image值为空，那么生成的镜像名称为“docker-compose.yml文件所在目录名称_ruoyi-gateway”，我放在jar目录，生成的镜像名称就是jar_ruoyi-gateway
+    image: zuul-gateway  # 构建镜像名称
+    container_name: zuul-gateway   # 容器名称
+    build:
+      context: ./    # 构建镜像的jar包和dockerfile文件所在的目录（相对于docker-compose.yml文件）
+      dockerfile: dockerfile  # 构建网关镜像的文件名称
+    ports:
+      - "9527:9527"   # 构建容器端口号，“:”前为宿主机端口，“:”后为容器端口
+  login-server:
+    image: login-server
+    container_name: login-server
+    build:
+      context: ./
+      dockerfile: login-dockerfile
+    ports:
+      - "8089:8089"
+  user-server:
+    image: user-server
+    container_name: user-server
+    build:
+      context: ./
+      dockerfile: user-dockerfile
+    ports:
+      - "8087:8087"
+  eureka-server:
+    image: eureka-server
+    container_name: eureka-server
+    build:
+      context: ./
+      dockerfile: eureka-dockerfile
+    ports:
+      - "8017:8017"

@@ -1,0 +1,17 @@
+# 基础镜像
+FROM  openjdk:8-jre
+# author
+LABEL author="hjz"
+
+# 创建目录
+RUN mkdir -p /home/jar
+# 指定路径，后面运行的jar包就是在这个目录
+WORKDIR /home/jar
+# 挂载目录
+VOLUME /home/jar
+
+# 复制jar文件到路径，第一个是宿主机文件目录（dockerfile所在目录，不能是绝对路径），第二个是容器文件目录
+COPY ./eureka-server-1.0-SNAPSHOT.jar /home/jar/eureka-server-1.0-SNAPSHOT.jar
+
+# 启动网关服务jar包
+ENTRYPOINT ["java","-jar","-Xms256M","-Xmx256M","eureka-server-1.0-SNAPSHOT.jar"]
